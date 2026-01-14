@@ -27,7 +27,15 @@ void loop() {
     // Ha ide eljutunk, van valami az olvasónál (kártya vagy telefon)
     
     // 2. Próbáljuk meg elküldeni a SELECT AID-et
-    uint8_t selectAid[] = { 0x00, 0xA4, 0x04, 0x00, 0x07, 0xA0, 0x00, 0x00, 0x02, 0x47, 0x10, 0x01, 0x00 };
+    uint8_t selectAid[] = { 
+      0x00, /* CLA */
+      0xA4, /* INS: Select File */
+      0x04, /* P1: Select by AID */
+      0x00, /* P2: First or only occurrence */
+      0x07, /* Lc: AID hossza (7 bájt) */
+      0xA0, 0x00, 0x00, 0x02, 0x47, 0x10, 0x01, /* Az AID-ed */
+      0x00  /* Le: Várható válaszhossz nincs meghatározva */
+    };
     
     if (nfc.inDataExchange(selectAid, sizeof(selectAid), response, &responseLength)) {
       // SIKER: Ez egy telefon, ami válaszolt az AID-re
